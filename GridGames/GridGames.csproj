@@ -14,6 +14,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="3.1.8" />
+    <PackageReference Include="Angular.Material" Version="1.1.12" />
   </ItemGroup>
 
   <ItemGroup>
