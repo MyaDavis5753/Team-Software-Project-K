@@ -5,11 +5,15 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MinesweeperComponent } from './minesweeper/minesweeper.component';
+import { NonogramComponent } from './minesweeper/nonogram/nonogram.component';
+import { SudokuComponent } from './minesweeper/sudoku/sudoku.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    MinesweeperComponent
+    MinesweeperComponent,
+    NonogramComponent,
+    SudokuComponent
   ],
   imports: [
     BrowserModule,
