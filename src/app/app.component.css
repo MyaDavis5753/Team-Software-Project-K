@@ -38,3 +38,8 @@
     .n-nav:hover{
         background-color:royalblue;
     }
+
+.title{
+    text-align: center;
+    margin-top: 70px;
+}
