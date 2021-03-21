@@ -1,1 +1,51 @@
 <h1 class="title">Nonogram</h1>
+
+<form (submit)="generatePuzzle(width, height)">
+    <label>Width:
+        <input type="number" name="nWidth" [(ngModel)]="width" step="1" max="20" ng-pattern="integerval" required/>
+    </label>
+    <label>Height:
+        <input type="number" name="nHeight" [(ngModel)]="height" step="1" max="20" ng-pattern="integerval" required/>
+    </label>
+    <button>Generate New Puzzle</button>
+</form>
+<button (click)="validate()">Check Puzzle</button>
+<p class="correctSolution" *ngIf="solved == 2">Correct!</p>
+<p class="incorrectSolution" *ngIf="solved == 1">There are mistakes in the puzzle</p>
+<main>
+    <table [style.marginLeft.px]="maxCluesInRow * 15" class='cluesTop' *ngIf="squares">
+        <tbody>
+            <tr *ngFor="let row of cluesTop">
+                <td *ngFor="let clue of row; let c = index">
+                    <p class="{{valid[c] ? 'valid' : 'invalid'}} clue top" *ngIf="clue != 0">{{ clue }}</p>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table style="float: left" id='cluesLeft' *ngIf="squares">
+        <tbody>
+            <tr *ngFor="let row of cluesLeft; let r = index">
+                <td *ngFor="let clue of row">
+                    <p class="{{valid[r + width] ? 'valid' : 'invalid'}} clue left" *ngIf="clue != 0">{{ clue }}</p>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table style="float: left" id='game' *ngIf="squares">
+        <tbody>
+            <tr *ngFor="let row of squares; let r = index">
+                <td *ngFor="let cell of row; let c = index"
+                (click)="onLClick(r, c)"
+                (contextmenu)="onRClick($event, r, c)">
+                    <button class="cell empty" *ngIf="cell == 0">X</button>
+                    <button class="cell filled" *ngIf="cell == 1"></button>
+                    <button class="cell undefined" *ngIf="cell == 2"></button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</main>
+
+<script>
+    document.getElementById("cluesTop").style.marginLeft = 100;//document.getElementById("cluesLeft").clientWidth;
+</script>
