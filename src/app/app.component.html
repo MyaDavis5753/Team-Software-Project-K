@@ -16,3 +16,14 @@
 </div>
 
 <router-outlet></router-outlet>
+
+<script>
+	function collapseMainBox()
+	{
+		var x = document.getElementById("front-page")
+		if (x.style.display === "none")
+			x.style.display = "block";
+		else
+			x.style.display = "none";
+	}
+</script>
