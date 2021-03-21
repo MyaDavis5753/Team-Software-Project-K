@@ -25,7 +25,7 @@ import { PageNotFoundComponent } from './page-not-found/page-not-found.component
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
-    FormsModule
+    FormsModule,
     RouterModule.forRoot([
       {path: 'minesweeper', component: MinesweeperComponent},
       {path: 'sudoku', component: SudokuComponent},
