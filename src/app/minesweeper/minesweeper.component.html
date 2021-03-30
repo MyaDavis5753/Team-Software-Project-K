@@ -1,7 +1,30 @@
-<head>
-	<title>{{title}}</title>
-	
-</head>
+<h1 class="title">Minesweeper</h1>
 
-<h1 class="title">{{title}}</h1>
-
+<form (submit)="generatePuzzle(width, height)">
+	<label>
+		Width:
+		<input type="number" name="nWidth" [(ngModel)]="width" step="1" max="20" ng-pattern="integerval" required />
+	</label>
+	<label>
+		Height:
+		<input type="number" name="nHeight" [(ngModel)]="height" step="1" max="20" ng-pattern="integerval" required />
+	</label>
+	<button>Generate New Puzzle</button>
+</form>
+<button (click)="validate()">Check Puzzle</button>
+<p class="correctSolution" *ngIf="solved == 2">Correct!</p>
+<p class="incorrectSolution" *ngIf="solved == 1">There are mistakes in the puzzle</p>
+<main>
+	<table style="float: left" id='game' *ngIf="squares">
+		<tbody>
+			<tr *ngFor="let row of squares; let r = index">
+				<td *ngFor="let cell of row; let c = index"
+					(click)="onLClick(r, c)"
+					(contextmenu)="onRClick($event, r, c)">
+					<button class="cell empty" *ngIf="cell == 0">0</button>
+					<button class="cell filled" *ngIf="cell == 1">1</button>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</main>
