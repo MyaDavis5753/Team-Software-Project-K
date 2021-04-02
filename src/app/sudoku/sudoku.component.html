@@ -1,13 +1,10 @@
 <h1 class="title">Sudoku</h1>
-<form (submit)="generatePuzzle(width, height)">
-    <label>Width:
-        <input type="number" name="nWidth" [(ngModel)]="width" step="1" max="20" ng-pattern="integerval" required/>
-    </label>
-    <label>Height:
-        <input type="number" name="nHeight" [(ngModel)]="height" step="1" max="20" ng-pattern="integerval" required/>
-    </label>
-    <button>Generate New Puzzle</button>
-</form>
+    <button (click)="setDifficulty()">Difficulty</button>
+    <p class="correctSolution" *ngIf="difficulty == 1">Easy</p>
+    <p class="correctSolution" *ngIf="difficulty == 2">Medium</p>
+    <p class="correctSolution" *ngIf="difficulty == 3">Hard</p>
+    <p class="correctSolution" *ngIf="difficulty == 4">Expert</p>
+    <button (click)="generatePuzzle(difficulty)">Generate New Puzzle</button>
 <main>
     <table style="float: left" id='game' *ngIf="squares">
         <tbody>

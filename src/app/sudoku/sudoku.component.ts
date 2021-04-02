@@ -19,7 +19,14 @@ export class SudokuComponent implements OnInit {
 
   ngOnInit(): void {
   }
-  generatePuzzle(width: number, height: number){
+  setDifficulty(){
+    this.difficulty=this.difficulty+1;
+    if(this.difficulty%5==0){
+      this.difficulty=1;
+    }
+
+  }
+  generatePuzzle(difficulty: number){
 
   this.solution=[
     [],[],[],
