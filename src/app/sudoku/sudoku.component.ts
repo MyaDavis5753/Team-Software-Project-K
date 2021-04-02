@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
+import {MatGridListModule} from '@angular/material/grid-list';
+
 @Component({
   selector: 'app-sudoku',
   templateUrl: './sudoku.component.html',
@@ -24,6 +26,18 @@ export class SudokuComponent implements OnInit {
     [],[],[],
     [],[],[],
   ]
+
+    this.width = 9;
+    this.height = 9;
+    this.squares = [];
+    for (var i: number = 0; i < this.height; i++) {
+      this.squares[i] = [];
+      for (var j: number = 0;  j < this.width; j++) {
+        this.squares[i][j] = j+i;
+      }
+    }
+  }  
+  /*
   var validEntryC = new Array(9)//confirms a valid entry for the collums
   var validEntryB = new Array(9).fill(false)//confirms a valid entry for the box
   var newI=true;
@@ -48,6 +62,9 @@ export class SudokuComponent implements OnInit {
       }
       j++;
     }
+    this.width=9;
+    this.height=9;
+
   }
   BoxCheckerDeterminer(i: number,j:number){
     var boxnum;
