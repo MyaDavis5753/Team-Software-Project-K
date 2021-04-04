@@ -18,7 +18,7 @@ export class SudokuComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
-    this.difficulty=0;
+    this.difficulty=1;
   }
   setDifficulty(){
     this.difficulty=this.difficulty+1;
@@ -26,44 +26,51 @@ export class SudokuComponent implements OnInit {
       this.difficulty=1;
     }
   }
+   BoxNumberDeterminer(i: number,j:number){
+      var boxnum;
+      if(i<3){boxnum=Math.ceil((j+1)/3)}
+      else if(i<6){boxnum=Math.ceil((j+1)/3)+3}
+      else(boxnum=Math.ceil((j+1)/3)+6)
+      return boxnum;
+    }
   
   generatePuzzle(difficulty: number){
 
-  this.solution=[
+  this.squares=[
     [],[],[],
     [],[],[],
     [],[],[],
   ]
 
-  //Temp file to fill in the genrated squares so I know that
-  //this kinda works.
+  /*Temp file to fill in the genrated squares so I know that
+  this kinda works.
+  */
     this.width = 9;
     this.height = 9;
     this.squares = [];
     for (var i: number = 0; i < this.height; i++) {
       this.squares[i] = [];
       for (var j: number = 0;  j < this.width; j++) {
-        this.squares[i][j] = j+i;
+        this.squares[i][j] = this.BoxNumberDeterminer(i,j);
       }
-    }
-  }  
-  /*
+    } 
+    /*
   var validEntryC = new Array(9)//confirms a valid entry for the collums
   var validEntryB = new Array(9).fill(false)//confirms a valid entry for the box
   var newI=true;
-    for(var j=0; j<9;){
-      for (var i=0; i<9;){
+    for(var i=0; i<9;){
+      for (var j=0; j<9;){
         if(newI){
           newI=false;
-          this.BoxChecker(this.BoxCheckerDeterminer(i,j),validEntryB)//mark invalid every number already in box
+          this.BoxChecker(this.BoxNumberDeterminer(i,j),validEntryB)//mark invalid every number already in box
           this.ColChecker(validEntryC,i,j,validEntryB)//mark invalid every number in collumn, saving those numbers, in case of box and column overlap
         }
         var n=Math.floor(Math.random()*9+1);  
         if(validEntryB[n]==false){
-          this.solution[j][i]==n
+          this.squares[i][j]==n
           validEntryB[n]=true
           this.ColRemover(validEntryC,validEntryB)
-          i++
+          j++
           newI=true
         }
       }
@@ -72,44 +79,47 @@ export class SudokuComponent implements OnInit {
       }
       j++;
     }
-    this.width=9;
-    this.height=9;
-
+    */
   }
-  BoxCheckerDeterminer(i: number,j:number){
-    var boxnum;
-    if(j<3){boxnum=Math.ceil(i+1/3)}
-    else if(j<6){boxnum=Math.ceil(i+1/3)+3}
-    else(boxnum=Math.ceil(i+1/3)+6)
-    return boxnum;
-  }
-  BoxChecker(boxnum:number,B:Array<Boolean>){
-    var v=(boxnum-1)%3+2//(boxnum%3)(if boxnum%3=0; change to 3)
-    var h=3*(boxnum%3)-1
-    if(h==-1)h=8
-    var i=0;var j=h
-    while(i<3){
-      if(this.solution[v-i][j]>0){B[this.solution[v-1][j]]=true}
-      j--;
-      if(j=h-3){i--;j=h;}
+    BoxChecker(boxnum:number,B:Array<boolean>){
+      var vert=0;
+      var horz=0;
+      if(boxnum<=3){vert=2}
+      else if(boxnum<=6){vert=5}
+      else{vert=8}
+      if(boxnum%3==1){horz=2}
+      if(boxnum%3==2){horz=5} 
+      if(boxnum%3==0){horz=8}
+      var i=0;
+      var j=horz;
+      while(j>vert-3){
+        if(this.squares[j][horz-i]>0){
+          B[this.squares[j][horz-i]]=true;
+        }
+        i++;
+        if(i==3){
+          j--;
+          i=0;
+        }
+      }
+    }
+    ColChecker(C: Array<number>,i:number,j:number,B:Array<boolean>){
+      var k=0;
+      while(j>=0){
+        C[k]=this.squares[j][i]
+        B[this.squares[j][i]]=true
+        j--;k++
+      }
     } 
-  }
-  ColChecker(C: Array<number>,i:number,j:number,B:Array<boolean>){
-    var k=0;
-    while(j>=0){
-      C[k]=this.solution[j][i]
-      B[this.solution[j][i]]=true
-      j--;k++
+    ColRemover(C:Array<number>,B:Array<boolean>){
+      var k=C.length-1;
+      while(k>=0){
+        B[C[k]]=false
+        k++
+      }
     }
-  } 
-  ColRemover(C:Array<number>,B:Array<boolean>){
-    var k=C.length-1;
-    while(k>=0){
-      B[C[k]]=false
-      k++
-    }
-  }
-  Above is code that I ctually wrote bassed on the pseudocode blow
+  /*
+  Above is code that I actually wrote bassed on the pseudocode blow
   the above is the true code for generating a puzzle, to be tested once I can
   see the base numbers in the grid.
   /*
@@ -118,61 +128,13 @@ How Sudoku Works
   1 2 3
   4 5 6
   7 8 9
-Make the puzzle(This took way to long to write out, but I think I got it all)
-  9x9 Array of ints(A)(set all to -1 on init) 
-  9 Array of bools(B)(starting all false)
-  9 Array of Col ints C, and counter k
-  newI=true;
-  puzzleMaker(
-    For int j=0; j<9
-      for int i=0; i<9{
-        if(newI){
-          newI=false;
-          if(i%3==0)(BoxChecker(BoxCheckerDeterminer(i,j),A,B))
-          ColChecker(A,i,j,B)
-        }
-        n=rand num(1-9);  
-        if(B[n]==false){
-          A[j][i]==n
-          B[n]=true
-          ColRemover(A,i,j,B)
-          i++
-          newI=true
-        }
-      }
-      B resets to all false;
-      j++;
-    }
-  )
-  BoxCheckerDeterminer(i,j){
-    if(j<3){boxnum=ceil(i/3)}
-    else if(j<6){boxnum=ceil(i/3)+3}
-    else(boxnum=ceil(i/3)+6)
+
+    this.width=9;
+    this.height=9;
+
   }
-  boxConflictChecker(needs box number,A,B)(
-    v=(boxnum-1)%3+2(boxnum%3)(if boxnum%3=0; change to 3)
-    h=3*(boxnum%3)-1
-    if(h==-1)h=8
-    i=0;j=h
-    while(i<3){
-      if(A[v-i][j]>0){B[A[v-1][j]]=true}
-      j--;
-      if(j=h-3){i--;j=h;}
-    } 
-  )
-  ColChecker(A,i,j,B){
-    while(j>=0){
-      C[k]=A[j][i]
-      B[A[j][i]]=true
-      j--;k++
-    }
-  } 
-  ColRemover(A,B){
-    while(k>=0){
-      B[C[k]}=false
-      j--;k++
-    }
-  }
+  
+  
 
  Now with the puzzle made in Array A, transfer it to a subset of boxes(I'm not writeing this out on Thurs as I'm doing this)
  Bassically every "isCorrect" turns into whatever the coresponding spot holds in the Array
