@@ -18,14 +18,15 @@ export class SudokuComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
+    this.difficulty=0;
   }
   setDifficulty(){
     this.difficulty=this.difficulty+1;
     if(this.difficulty%5==0){
       this.difficulty=1;
     }
-
   }
+  
   generatePuzzle(difficulty: number){
 
   this.solution=[
@@ -34,6 +35,8 @@ export class SudokuComponent implements OnInit {
     [],[],[],
   ]
 
+  //Temp file to fill in the genrated squares so I know that
+  //this kinda works.
     this.width = 9;
     this.height = 9;
     this.squares = [];
@@ -106,6 +109,9 @@ export class SudokuComponent implements OnInit {
       k++
     }
   }
+  Above is code that I ctually wrote bassed on the pseudocode blow
+  the above is the true code for generating a puzzle, to be tested once I can
+  see the base numbers in the grid.
   /*
 
 How Sudoku Works
