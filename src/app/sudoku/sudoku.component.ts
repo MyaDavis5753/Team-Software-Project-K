@@ -47,16 +47,24 @@ export class SudokuComponent implements OnInit {
   */
     this.width = 9;
     this.height = 9;
-    this.squares = [];
+    var validEntryB = new Array(10).fill(false)
     for (var i: number = 0; i < this.height; i++) {
       this.squares[i] = [];
-      for (var j: number = 0;  j < this.width; j++) {
-        this.squares[i][j] = this.BoxNumberDeterminer(i,j);
+      for (var j: number = 0;  j < this.width;) {
+        var n=Math.floor(Math.random()*9+1)
+        if(!validEntryB[n]){
+          this.squares[i][j] = n
+          validEntryB[n]=true
+          j++;
+        }
       }
-    } 
+      for(var k: number=0;k<validEntryB.length;k++){
+        validEntryB[k]=false;
+      }
+    }  
+    
     /*
   var validEntryC = new Array(9)//confirms a valid entry for the collums
-  var validEntryB = new Array(9).fill(false)//confirms a valid entry for the box
   var newI=true;
     for(var i=0; i<9;){
       for (var j=0; j<9;){
@@ -78,18 +86,17 @@ export class SudokuComponent implements OnInit {
         validEntryB[k]=false;
       }
       j++;
-    }
-    */
+    }*/
   }
     BoxChecker(boxnum:number,B:Array<boolean>){
       var vert=0;
       var horz=0;
       if(boxnum<=3){vert=2}
       else if(boxnum<=6){vert=5}
-      else{vert=8}
+      else{vert=8}//last index of col where the box ends
       if(boxnum%3==1){horz=2}
       if(boxnum%3==2){horz=5} 
-      if(boxnum%3==0){horz=8}
+      if(boxnum%3==0){horz=8}//last index of row where box ends
       var i=0;
       var j=horz;
       while(j>vert-3){
@@ -105,10 +112,10 @@ export class SudokuComponent implements OnInit {
     }
     ColChecker(C: Array<number>,i:number,j:number,B:Array<boolean>){
       var k=0;
-      while(j>=0){
-        C[k]=this.squares[j][i]
-        B[this.squares[j][i]]=true
-        j--;k++
+      while(i>=0){
+        C[k]=this.squares[i][j]
+        B[C[k]]=true
+        i--;k++
       }
     } 
     ColRemover(C:Array<number>,B:Array<boolean>){
