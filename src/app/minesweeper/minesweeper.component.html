@@ -3,5 +3,41 @@
 	
 </head>
 
-<h1 class="title">{{title}}</h1>
+<h1 class="title">Minesweeper</h1>
+
+<form (submit)="setupGame(width, height, mines)">
+	<label>
+		Width:
+		<input type="number" name="nWidth" [(ngModel)]="width" step="1" max="20" ng-pattern="integerval" required />
+	</label>
+	<label>
+		Height:
+		<input type="number" name="nHeight" [(ngModel)]="height" step="1" max="20" ng-pattern="integerval" required />
+	</label>
+	<label>
+		Mines:
+		<input type="number" name="nMines" [(ngModel)]="mines" step="1" max="20" ng-pattern="integerval" required />
+	</label>
+	<button>
+		Generate New Game
+	</button>
+</form>
+
+<button (click)="validate()">Check Game</button>
+<p class="correct" *ngIf="hasWon == true">Correct!</p>
+<p class="incorrect" *ngIf="hasWon == false">Incorrect!</p>
+
+<table style="float:left" id='game' *ngIf="cells">
+	<tbody>
+		<tr *ngFor="let row of cells; let r = index">
+			<td *ngFor="let cell of row; let c = index"
+				(click)="onLClick(c,r)"
+				(contextmenu)="onRClick($event, c, r)">
+					<button class="cell hidden" *ngIf="solution[c][r] == 0">-</button>
+					<button class="cell shown" *ngIf="solution[c][r] == 1">{{cell}}</button>
+					<button class="cell flagged" *ngIf="solution[c][r] == 2 || solution[c][r] == 3">X</button>
+			</td>
+		</tr>
+	</tbody>
+</table>
 
