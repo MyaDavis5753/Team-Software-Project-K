@@ -28,37 +28,72 @@ export class NonogramComponent implements OnInit {
 
   // initializes the grid to be all 2 (undefined) and generates the clues
   generatePuzzle(width: number, height: number) {
-    this.generateClues();
-
-    this.solution = [
-      [1,1,1,1,1],
-      [1,0,1,0,1],
-      [1,1,0,1,1],
-      [1,1,1,1,1],
-      [1,1,1,1,1],
-      [1,0,0,0,1]
-    ];
-
-    this.valid = new Array(this.width + this.height).fill(true);
-
     this.width = width;
     this.height = height;
+    this.valid = new Array(this.width + this.height).fill(true);
+    
+    var percentFilled = .50; // percent of boxes that should be filled in the puzzle
     this.squares = [];
+    this.solution = [];
     for (var i: number = 0; i < this.height; i++) {
       this.squares[i] = [];
+      this.solution[i] = [];
       for (var j: number = 0;  j < this.width; j++) {
         this.squares[i][j] = 2;
+        this.solution[i][j] = (Math.random() > percentFilled ? 1 : 0);
       }
     }
+
+    this.generateClues();
+
   }
 
   // generates the clues to display on top and left side of the puzzle, guaranteeing a unique solution
   generateClues() {
-    // TEMP assuming 5x6
-    this.clues = [[6],[1,3],[2,2],[1,3],[6],
-                  [5],[1,1,1],[2,2],[5],[5],[1,1]];
-    this.maxCluesInCol = this.findMaxLength(this.clues.slice(0, this.width));
-    this.maxCluesInRow = this.findMaxLength(this.clues.slice(this.width));
+
+    this.maxCluesInCol = 0;
+    this.maxCluesInRow = 0;
+    this.clues = [];
+
+    // Generate top clues
+    for (var i: number = 0; i < this.width; i++) {
+      this.clues[i] = [];
+      var currBlockLength = 0; // amount of filled cells for current clue
+      var currCluesInCol = 0; // amount of clues in the current column
+      for (var j: number = 0; j < this.height; j++) {
+        if (this.solution[j][i]) {
+          currBlockLength++; // adds 1 clue to current block if solution cell should be filled
+        } else if (currBlockLength > 0) {
+           currCluesInCol = this.clues[i].push(currBlockLength); // add currBlockLength to the end of current clues column
+          currBlockLength = 0;
+        }
+      }
+      if (currBlockLength > 0) {
+        currCluesInCol = this.clues[i].push(currBlockLength); // add currBlockLength to the end of current clues column
+        currBlockLength = 0;
+      }
+      this.maxCluesInCol = Math.max(this.maxCluesInCol, currCluesInCol);
+    }
+
+    // Generate side clues
+    for (var i: number = 0; i < this.height; i++) {
+      this.clues[i+this.width] = [];
+      var currBlockLength = 0; // amount of filled cells for current clue
+      var currCluesInRow = 0; // amount of clues in the current column
+      for (var j: number = 0; j < this.width; j++) {
+        if (this.solution[i][j]) {
+          currBlockLength++; // adds 1 clue to current block if solution cell should be filled
+        } else if (currBlockLength > 0) {
+          currCluesInRow = this.clues[i+this.width].push(currBlockLength);
+          currBlockLength = 0;
+        }
+      }
+      if (currBlockLength > 0) {
+        currCluesInRow = this.clues[i+this.width].push(currBlockLength);
+        currBlockLength = 0;
+      }
+      this.maxCluesInRow = Math.max(this.maxCluesInRow, currCluesInRow)
+    }
 
     this.cluesTop = this.transpose(this.generateCluesDisplay(this.clues.slice(0, this.width), this.maxCluesInCol));
     this.cluesLeft = this.generateCluesDisplay(this.clues.slice(this.width), this.maxCluesInRow);
@@ -122,7 +157,7 @@ export class NonogramComponent implements OnInit {
       cluesDisplay[i] = clues[i];
       var shamt = maxLength - clues[i].length
       for (var n: number = 0; n < shamt; n++) { // adds 0's (empty spots) before the clue in the 2D array
-        clues[i].unshift(0);
+        cluesDisplay[i].unshift(0);
       }
     }
     return cluesDisplay;
