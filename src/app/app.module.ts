@@ -12,9 +12,6 @@ import { NonogramComponent } from './nonogram/nonogram.component';
 import { MainComponent } from './main/main.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 
-import {MatGridListModule} from '@angular/material/grid-list';
-import {MatInputModule} from '@angular/material/input';
-
 @NgModule({
   declarations: [
     AppComponent,
@@ -29,8 +26,6 @@ import {MatInputModule} from '@angular/material/input';
     AppRoutingModule,
     BrowserAnimationsModule,
     FormsModule,
-    MatGridListModule,
-    MatInputModule,
     RouterModule.forRoot([
       {path: 'minesweeper', component: MinesweeperComponent},
       {path: 'sudoku', component: SudokuComponent},

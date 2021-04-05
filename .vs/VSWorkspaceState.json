@@ -3,8 +3,9 @@
     "",
     "\\src",
     "\\src\\app",
+    "\\src\\app\\minesweeper",
     "\\src\\app\\nonogram"
   ],
-  "SelectedNode": "\\src\\app\\nonogram\\nonogram.component.ts",
+  "SelectedNode": "\\src\\app\\minesweeper\\minesweeper.component.spec.ts",
   "PreviewInSolutionExplorer": false
 }
