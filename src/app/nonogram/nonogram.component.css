@@ -1,6 +1,10 @@
-.title{
+.title {
     text-align: center;
-    margin-top: 70px;
+    margin-top: 50px;
+    margin-bottom: 30px;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-size: 32px;
+    
 }
 
 .col{
@@ -14,9 +18,11 @@
     width: 100%;
 }
 
-.generate{
+.generate {
     display: inline-block;
     margin: 40px;
+    margin-left: 100px;
+    width: 25%;
 }
 
 label{
@@ -25,8 +31,15 @@ label{
     padding: 10px;
 }
 
+input{
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-size: 18px;
+    padding: 5px;
+    margin: 5px;
+}
+
 .input{
-    display: inline-block;
+    display: block;
 }
 
 .generatebutton{

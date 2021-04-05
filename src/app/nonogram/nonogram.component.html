@@ -2,16 +2,19 @@
 <div class="main">
     <div class="generate col">
         <form (submit)="generatePuzzle(width, height)">
-            <label>Width:
+            <label class="input">Width:
                 <input type="number" name="nWidth" class="input" [(ngModel)]="width" step="1" max="20"
                     ng-pattern="integerval" required />
             </label>
-            <label>Height:
+            <label class="input">Height:
                 <input type="number" name="nHeight" class="input" [(ngModel)]="height" step="1" max="20"
                     ng-pattern="integerval" required />
             </label>
             <button class="generatebutton">Generate New Puzzle</button>
         </form>
+        <button (click)="validate()" class="checkButton">Check Puzzle</button>
+        <p class="correctSolution" *ngIf="solved == 2">Correct!</p>
+        <p class="incorrectSolution" *ngIf="solved == 1">There are mistakes in the puzzle</p>
     </div>
 
     <div class="puzzle col">
@@ -50,10 +53,5 @@
         </main>
     </div>
 
-    <div class="check col">
-        <button (click)="validate()" class="checkButton">Check Puzzle</button>
-        <p class="correctSolution" *ngIf="solved == 2">Correct!</p>
-        <p class="incorrectSolution" *ngIf="solved == 1">There are mistakes in the puzzle</p>
-    </div>
 
 </div>

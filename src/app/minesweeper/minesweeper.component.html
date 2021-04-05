@@ -7,23 +7,26 @@
 <div class="main">
 	<div class="generate col">
 		<form (submit)="setupGame(width, height, mines)">
-			<label>
+			<label class="input">
 				Width:
 				<input type="number" name="mWidth" class="input" [(ngModel)]="width" step="1" max="20"
 					   ng-pattern="integerval" required />
 			</label>
-			<label>
+			<label class="input">
 				Height:
 				<input type="number" name="mHeight" class="input" [(ngModel)]="height" step="1" max="20"
 					   ng-pattern="integerval" required />
 			</label>
-			<label>
+			<label class="input">
 				Mines:
-				<input type="number" name="mMines" [(ngModel)]="mines" step="1" max="20"
+				<input type="number" name="mMines" class="input" [(ngModel)]="mines" step="1" max="20"
 					   ng-pattern="integerval" required />
 			</label>
-			<button class="generatebutton">Generate New Game</button>
+			<button class="generatebutton button">Generate New Game</button>
 		</form>
+		<button class="checkButton button" (click)="validate()">Check Game</button>
+		<p class="correct" *ngIf="hasWon == true">Correct!</p>
+		<p class="incorrect" *ngIf="hasWon == false">Incorrect!</p>
 	</div>
 
 	<div class="puzzle col">
@@ -42,12 +45,6 @@
 				</tbody>
 			</table>
 		</main>
-	</div>
-
-	<div class="check col">
-		<button (click)="validate()">Check Game</button>
-		<p class="correct" *ngIf="hasWon == true">Correct!</p>
-		<p class="incorrect" *ngIf="hasWon == false">Incorrect!</p>
 	</div>
 
 </div>
