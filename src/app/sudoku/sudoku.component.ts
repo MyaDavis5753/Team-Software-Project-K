@@ -33,6 +33,28 @@ export class SudokuComponent implements OnInit {
       else(boxnum=Math.ceil((j+1)/3)+6)
       return boxnum;
     }
+  boxChecker(i:number,j:number,B:Array<Boolean>){
+    var boxnum=this.BoxNumberDeterminer(i,j)
+    while(i>=0&&boxnum==this.BoxNumberDeterminer(i,j)){
+      while(boxnum==this.BoxNumberDeterminer(i,j)){
+        B[this.squares[i][j]]=true
+        j--;
+      }
+      j=j+3
+      i--
+    }
+  }
+  boxRemover(i:number,j:number,B:Array<Boolean>){
+    var boxnum=this.BoxNumberDeterminer(i,j)
+    while(i>=0&&boxnum==this.BoxNumberDeterminer(i,j)){
+      while(boxnum==this.BoxNumberDeterminer(i,j)){
+        B[this.squares[i][j]]=false
+        j--;
+      }
+      j=j+3
+      i--
+    }
+  }
   
   generatePuzzle(difficulty: number){
 
@@ -42,10 +64,54 @@ export class SudokuComponent implements OnInit {
     [],[],[],
   ]
 
-  /*Temp file to fill in the genrated squares so I know that
-  this kinda works.
-  */
     this.width = 9;
+    this.height = 9;
+    var validEntryB = new Array(10).fill(false)
+    for (var i: number = 0; i < this.height; i++) {
+      this.squares[i] = [];
+       for (var j: number = 0;  j < this.width;) {
+         if(this.difficulty==1||this.difficulty==4){if(i>0){this.colChecker(i-1,j,validEntryB)}}
+         if(this.difficulty==2||this.difficulty==4){if(j>0){this.rowChecker(i,j-1,validEntryB)}}
+         if(this.difficulty==3||this.difficulty==4){this.boxChecker(i,j,validEntryB)}
+        console.log(validEntryB)
+        var n=Math.floor(Math.random()*9+1)
+        if(!validEntryB[n]){
+          this.squares[i][j] = n
+          this.colRemover(i,j,validEntryB);
+          this.rowRemover(i,j,validEntryB);
+          this.boxRemover(i,j,validEntryB);
+          j++;
+        }
+      }
+    }
+  }  
+    colChecker(i:number,j:number,B:Array<boolean>){
+      while(i>=0){
+        B[this.squares[i][j]]=true;
+        i--;
+      }
+    }
+    colRemover(i:number,j:number,B:Array<Boolean>){
+      while(i>=0){
+        B[this.squares[i][j]]=false;
+        i--;
+      }
+    }
+    rowChecker(i:number,j:number,B:Array<boolean>){
+      while(j>=0){
+        B[this.squares[i][j]]=true;
+        j--;
+      }
+    }
+    rowRemover(i:number,j:number,B:Array<Boolean>){
+      while(j>=0){
+        B[this.squares[i][j]]=false;
+        j--;
+      }
+    }
+
+/* generates individual rows with nums 1-9 in rand order.
+this.width = 9;
     this.height = 9;
     var validEntryB = new Array(10).fill(false)
     for (var i: number = 0; i < this.height; i++) {
@@ -61,8 +127,8 @@ export class SudokuComponent implements OnInit {
       for(var k: number=0;k<validEntryB.length;k++){
         validEntryB[k]=false;
       }
-    }  
-    
+    } */
+
     /*
   var validEntryC = new Array(9)//confirms a valid entry for the collums
   var newI=true;
@@ -87,8 +153,25 @@ export class SudokuComponent implements OnInit {
       }
       j++;
     }*/
+  
+    
+  /*
+  Above is code that I actually wrote bassed on the pseudocode blow
+  the above is the true code for generating a puzzle, to be tested once I can
+  see the base numbers in the grid.
+  /*
+
+How Sudoku Works
+  1 2 3
+  4 5 6
+  7 8 9
+
+    this.width=9;
+    this.height=9;
+
   }
-    BoxChecker(boxnum:number,B:Array<boolean>){
+
+  BoxChecker(boxnum:number,B:Array<boolean>){
       var vert=0;
       var horz=0;
       if(boxnum<=3){vert=2}
@@ -112,6 +195,7 @@ export class SudokuComponent implements OnInit {
     }
     ColChecker(C: Array<number>,i:number,j:number,B:Array<boolean>){
       var k=0;
+      i=i-1
       while(i>=0){
         C[k]=this.squares[i][j]
         B[C[k]]=true
@@ -119,27 +203,15 @@ export class SudokuComponent implements OnInit {
       }
     } 
     ColRemover(C:Array<number>,B:Array<boolean>){
-      var k=C.length-1;
-      while(k>=0){
-        B[C[k]]=false
+      var k=0;
+      while(k<C.length&&C[k]>0){
+        if(C[k]>0){
+          B[C[k]]=false
+          C[k]=-1
+        }
         k++
       }
     }
-  /*
-  Above is code that I actually wrote bassed on the pseudocode blow
-  the above is the true code for generating a puzzle, to be tested once I can
-  see the base numbers in the grid.
-  /*
-
-How Sudoku Works
-  1 2 3
-  4 5 6
-  7 8 9
-
-    this.width=9;
-    this.height=9;
-
-  }
   
   
 
