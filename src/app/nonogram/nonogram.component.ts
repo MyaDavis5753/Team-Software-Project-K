@@ -28,73 +28,75 @@ export class NonogramComponent implements OnInit {
 
   // initializes the grid to be all 2 (undefined) and generates the clues
   generatePuzzle(width: number, height: number) {
-    this.generateClues(); //TEMP method
-
-    this.solution = [
-      [1,1,1,1,1],
-      [1,0,1,0,1],
-      [1,1,0,1,1],
-      [1,1,1,1,1],
-      [1,1,1,1,1],
-      [1,0,0,0,1]
-    ];
-
-    this.valid = new Array(this.width + this.height).fill(true);
-
     this.width = width;
     this.height = height;
+    this.valid = new Array(this.width + this.height).fill(true);
+    
+    var percentFilled = .50; // percent of boxes that should be filled in the puzzle
     this.squares = [];
+    this.solution = [];
     for (var i: number = 0; i < this.height; i++) {
       this.squares[i] = [];
+      this.solution[i] = [];
       for (var j: number = 0;  j < this.width; j++) {
         this.squares[i][j] = 2;
+        this.solution[i][j] = (Math.random() > percentFilled ? 1 : 0);
       }
     }
+
+    this.generateClues();
+
   }
 
   // generates the clues to display on top and left side of the puzzle, guaranteeing a unique solution
   generateClues() {
-    // TEMP assuming 5x6
-    this.clues = [[6],[1,3],[2,2],[1,3],[6],
-                  [5],[1,1,1],[2,2],[5],[5],[1,1]];
 
     this.maxCluesInCol = 0;
     this.maxCluesInRow = 0;
+    this.clues = [];
+
+    // Generate top clues
     for (var i: number = 0; i < this.width; i++) {
-      if (this.clues[i].length > this.maxCluesInCol) {
-        this.maxCluesInCol = this.clues[i].length;
+      this.clues[i] = [];
+      var currBlockLength = 0; // amount of filled cells for current clue
+      var currCluesInCol = 0; // amount of clues in the current column
+      for (var j: number = 0; j < this.height; j++) {
+        if (this.solution[j][i]) {
+          currBlockLength++; // adds 1 clue to current block if solution cell should be filled
+        } else if (currBlockLength > 0) {
+           currCluesInCol = this.clues[i].push(currBlockLength); // add currBlockLength to the end of current clues column
+          currBlockLength = 0;
+        }
       }
-    }
-    for (var i: number = this.width; i < this.clues.length; i++) {
-      if (this.clues[i].length > this.maxCluesInRow) {
-        this.maxCluesInRow = this.clues[i].length;
+      if (currBlockLength > 0) {
+        currCluesInCol = this.clues[i].push(currBlockLength); // add currBlockLength to the end of current clues column
+        currBlockLength = 0;
       }
+      this.maxCluesInCol = Math.max(this.maxCluesInCol, currCluesInCol);
     }
 
-    var cluesTopTemp = [];
-    for (var i: number = 0; i < this.width; i++) {
-      cluesTopTemp[i] = this.clues[i];
-      var shamt = this.maxCluesInCol - this.clues[i].length
-      for (var n: number = 0; n < shamt; n++) {
-        cluesTopTemp[i].unshift(0);
-      }
-    }
-    this.cluesTop = [];
-    for (var i: number = 0; i < this.maxCluesInCol; i++) {
-      this.cluesTop[i] = [];
-      for (var j: number = 0; j < this.width; j++) {
-        this.cluesTop[i][j] = cluesTopTemp[j][i];
-      }
-    }
-
-    this.cluesLeft = [];
+    // Generate side clues
     for (var i: number = 0; i < this.height; i++) {
-      this.cluesLeft[i] = this.clues[i+this.width];
-      var shamt = this.maxCluesInRow - this.clues[i+this.width].length;
-      for (var n: number = 0; n < shamt; n++) {
-        this.cluesLeft[i].unshift(0);
+      this.clues[i+this.width] = [];
+      var currBlockLength = 0; // amount of filled cells for current clue
+      var currCluesInRow = 0; // amount of clues in the current column
+      for (var j: number = 0; j < this.width; j++) {
+        if (this.solution[i][j]) {
+          currBlockLength++; // adds 1 clue to current block if solution cell should be filled
+        } else if (currBlockLength > 0) {
+          currCluesInRow = this.clues[i+this.width].push(currBlockLength);
+          currBlockLength = 0;
+        }
       }
+      if (currBlockLength > 0) {
+        currCluesInRow = this.clues[i+this.width].push(currBlockLength);
+        currBlockLength = 0;
+      }
+      this.maxCluesInRow = Math.max(this.maxCluesInRow, currCluesInRow)
     }
+
+    this.cluesTop = this.transpose(this.generateCluesDisplay(this.clues.slice(0, this.width), this.maxCluesInCol));
+    this.cluesLeft = this.generateCluesDisplay(this.clues.slice(this.width), this.maxCluesInRow);
   }
 
   // updates the cell when left clicked
@@ -116,6 +118,8 @@ export class NonogramComponent implements OnInit {
     }
   }
 
+  // checks if the solution submitted is valid, marks solved as 2 if correct or 1 if incorrect
+  // sets valid[r] or valid[c] as false if the row or column respectively contains an incorrect cell
   validate() {
     this.valid.fill(true);
     this.solved = 2;
@@ -131,5 +135,43 @@ export class NonogramComponent implements OnInit {
         }
       }
     }
+  }
+
+  // finds the max length of a subarray in a 2D array, e.g. [[2],[2],[2,2,2]] returns 3
+  findMaxLength(arr: number[][]) {
+    var max = 0;
+    for (var i: number = 0; i < arr.length; i++) {
+      if (arr[i].length > max) {
+        max = arr[i].length;
+      }
+    }
+    return max;
+  }
+
+  // generates a 2D array of the clues to display, with 0's in place of empty spots
+  // arr: original 2D array of clues
+  // maxLength: max number of clues in one row/col of arr
+  generateCluesDisplay(clues: number[][], maxLength: number) {
+    var cluesDisplay = [];
+    for (var i: number = 0; i < clues.length; i++) {
+      cluesDisplay[i] = clues[i];
+      var shamt = maxLength - clues[i].length
+      for (var n: number = 0; n < shamt; n++) { // adds 0's (empty spots) before the clue in the 2D array
+        cluesDisplay[i].unshift(0);
+      }
+    }
+    return cluesDisplay;
+  }
+
+  // transposes a 2D array i.e. its rows become its columns and vice versa
+  transpose(arr: number[][]) {
+    var clues: number[][] = [];
+    for (var i: number = 0; i < arr[0].length; i++) {
+      clues[i] = [];
+      for (var j: number = 0; j < arr.length; j++) {
+        clues[i][j] = arr[j][i];
+      }
+    }
+    return clues;
   }
 }
