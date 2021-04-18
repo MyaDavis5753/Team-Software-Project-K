@@ -94,15 +94,44 @@ export class SudokuComponent implements OnInit {
       }
     }
     var validEntryB = new Array(10).fill(false)
-    for(var k=0;k<35;k=k+4){
+  /*  for(var k=0;k<35;k=k+4){
       this.BoxMaker(k%9+1,validEntryB)
+    } */
+    var rows=new Array(9)
+    for(var k=0;k<this.width;){
+      var n=Math.floor(Math.random()*9+1)
+      if(!validEntryB[n]){
+        rows[k]=n
+        k++
+        validEntryB[n]=true;
+      }
     }
+    var used=new Array(3).fill(false)
+    var count=Math.floor(Math.random()*3)
+    used[count]=true
     for(var i=0;i<this.height;i++){
+      if(i%3==0&&i!=0){
+        while(used[count]){count=Math.floor(Math.random()*3)}
+        used[count]=true
+      }
       for(var j=0;j<this.width;j++){
-        this.squares[i][j]=this.difficulty/9>=Math.random()?this.solution[i][j]:0
+        this.solution[i][j]=rows[(j+i*3+count)%9]
+        this.squares[i][j]=this.difficulty/9>Math.random()?this.solution[i][j]:0
       }
     }
   }
+  // BoxMaker(rows:Array<number>,used:Array<boolean>,k:number){
+  //   var n=Math.floor(Math.random()*3)
+  //   while(used[n]==true){n=Math.floor(Math.random()*3)}
+  //   used[n]=true
+  //   for(var l=k;l<l+3;l++){
+  //     for(var j=0;j<this.width;j++){
+  //       this.solution[l][j]=rows[(n+j)%9]
+  //     }
+  //     n=n+3
+  //   }
+  // }
+  /*
   BoxMaker(boxnum:number,validEntryB:Array<boolean>){
     var indicies =this.BoxIndeciesFinder(boxnum)
     var h=indicies[0]
@@ -129,7 +158,7 @@ export class SudokuComponent implements OnInit {
         } 
       }
     }
-  }  
+  } */
     colChecker(i:number,j:number,B:Array<boolean>){
       while(i>=0){
         B[this.solution[i][j]]=true;
