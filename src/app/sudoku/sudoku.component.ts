@@ -18,12 +18,12 @@ export class SudokuComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
-    this.difficulty=1;
+    this.difficulty=4;
   }
   setDifficulty(){
-    this.difficulty=this.difficulty+1;
-    if(this.difficulty%5==0){
-      this.difficulty=1;
+    this.difficulty=this.difficulty-.5;
+    if(this.difficulty==2){
+      this.difficulty=4;
     }
   }
    BoxNumberDeterminer(i: number,j:number){
@@ -66,13 +66,18 @@ export class SudokuComponent implements OnInit {
 
     this.width = 9;
     this.height = 9;
+    for(var i=0;i<this.height;i++){
+      for(var j=0;j<this.height;j++){
+        this.squares[i][j]=0
+      }
+    }
     var validEntryB = new Array(10).fill(false)
-    for (var i: number = 0; i < this.height; i++) {
+    for (var i: number = 0; i < this.height;i++) {
       this.squares[i] = [];
        for (var j: number = 0;  j < this.width;) {
-         if(this.difficulty==1||this.difficulty==4){if(i>0){this.colChecker(i-1,j,validEntryB)}}
-         if(this.difficulty==2||this.difficulty==4){if(j>0){this.rowChecker(i,j-1,validEntryB)}}
-         if(this.difficulty==3||this.difficulty==4){this.boxChecker(i,j,validEntryB)}
+         if(this.difficulty==4||this.difficulty==2.5){if(i>0){this.colChecker(i-1,j,validEntryB)}}
+         if(this.difficulty==3.5||this.difficulty==2.5){if(j>0){this.rowChecker(i,j-1,validEntryB)}}
+         if(this.difficulty==3||this.difficulty==2.5){this.boxChecker(i,j,validEntryB)}
         console.log(validEntryB)
         var n=Math.floor(Math.random()*9+1)
         if(!validEntryB[n]){

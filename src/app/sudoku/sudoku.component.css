@@ -3,6 +3,9 @@
     margin-top: 70px;
 }
 
+.cell {
+    width: 10px;
+}
 .col {
     float: left;
     width: 33.33%
@@ -58,6 +61,23 @@ label {
     margin: 0px;
 }
 
+.rowThickBorder{
+    border-top: 5px solid black;
+}
+.colThickBorder{
+    border-left: 5px solid black;
+}
+.endRow{
+    border-bottom: 5px solid black;
+}
+.endCol{
+    border-right: 5px solid black;
+}
+
+mat-grid-tile{
+        background: lightblue;
+        border: solid 2px #000;
+}
 .correctSolution {
     color: green;
 }
