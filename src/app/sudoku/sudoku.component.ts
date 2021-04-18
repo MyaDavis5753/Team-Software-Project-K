@@ -27,54 +27,22 @@ export class SudokuComponent implements OnInit {
       this.difficulty=4;
     }
   }
-   BoxNumberDeterminer(i: number,j:number){
-      var boxnum;
-      if(i<3){boxnum=Math.ceil((j+1)/3)}
-      else if(i<6){boxnum=Math.ceil((j+1)/3)+3}
-      else(boxnum=Math.ceil((j+1)/3)+6)
-      return boxnum;
+  //check to see if the puzzle is right
+  validate(){
+    this.solved=true
+    for(var i=0;i<this.height;i++){
+      for(var j=0;j<this.width;j++){
+        if(this.solution[i][j]!=this.squares[i][j]){
+          this.solved=false;
+          break
+        }
+      }
     }
-    BoxIndeciesFinder(boxnum:number){
-      var indecies = new Array(2)
-      if(boxnum%3==1){
-        indecies[0]=boxnum-1
-        indecies[1]=0
-      }
-      if(boxnum%3==2){
-        indecies[0]=boxnum-2
-        indecies[1]=3
-      }
-      if(boxnum%3==0){
-        indecies[0]=boxnum-3
-        indecies[1]=6
-      }
-      return indecies
-    }
-  boxChecker(i:number,j:number,B:Array<Boolean>){
-    var boxnum=this.BoxNumberDeterminer(i,j)
-    while(i>=0&&boxnum==this.BoxNumberDeterminer(i,j)){
-      while(boxnum==this.BoxNumberDeterminer(i,j)){
-        B[this.solution[i][j]]=true
-        j--;
-      }
-      j=j+3
-      i--
-    }
-  }
-  boxRemover(i:number,j:number,B:Array<Boolean>){
-    var boxnum=this.BoxNumberDeterminer(i,j)
-    while(i>=0&&boxnum==this.BoxNumberDeterminer(i,j)){
-      while(boxnum==this.BoxNumberDeterminer(i,j)){
-        B[this.solution[i][j]]=false
-        j--;
-      }
-      j=j+3
-      i--
-    }
+    return this.solved
   }
   
   generatePuzzle(difficulty: number){
-
+//create baseline arrays for each of what we are going to use, arranged this way to note that they should have patterns of a 3x3 grid
   this.squares=[
     [],[],[],
     [],[],[],
@@ -86,6 +54,7 @@ export class SudokuComponent implements OnInit {
     [],[],[],
   ]
 
+  //get some inital parameters set.  
     this.width = 9;
     this.height = 9;
     for(var i=0;i<this.height;i++){
@@ -97,6 +66,7 @@ export class SudokuComponent implements OnInit {
   /*  for(var k=0;k<35;k=k+4){
       this.BoxMaker(k%9+1,validEntryB)
     } */
+    //generate a row of random numbers 1-9, without doubling down on any number.
     var rows=new Array(9)
     for(var k=0;k<this.width;){
       var n=Math.floor(Math.random()*9+1)
@@ -106,20 +76,30 @@ export class SudokuComponent implements OnInit {
         validEntryB[n]=true;
       }
     }
+    //this is where we make the puzzle, needing to shift our row of numbers 3 times.
+    //either with a single increase, double increase, or no increase to our row.
     var used=new Array(3).fill(false)
     var count=Math.floor(Math.random()*3)
     used[count]=true
     for(var i=0;i<this.height;i++){
-      if(i%3==0&&i!=0){
+      if(i%3==0&&i!=0){//make it so our shift by 1 2 or 0 is randomized, but non-repetitions.
         while(used[count]){count=Math.floor(Math.random()*3)}
         used[count]=true
       }
       for(var j=0;j<this.width;j++){
-        this.solution[i][j]=rows[(j+i*3+count)%9]
-        this.squares[i][j]=this.difficulty/9>Math.random()?this.solution[i][j]:0
+        //fill the puzzle with the numbers from our row, ensuring that no number ends up in the same collumn
+        this.solution[i][j]=rows[(j+i*3+count)%9]        
+        //what we show, based of difficulty
+        this.squares[i][j]=this.difficulty/9>Math.random()?this.solution[i][j]:null
       }
     }
+    //loged for testing purposes
+    console.log(this.solution)
+    console.log(this.squares)
   }
+
+  /*Welcome to the graveyard of failed ideas.
+  //make each box indivually, going from 1-5-9-4...., didn't work out well.
   // BoxMaker(rows:Array<number>,used:Array<boolean>,k:number){
   //   var n=Math.floor(Math.random()*3)
   //   while(used[n]==true){n=Math.floor(Math.random()*3)}
@@ -158,43 +138,84 @@ export class SudokuComponent implements OnInit {
         } 
       }
     }
-  } */
+  } 
+  //check the collumn for a like number and mark it
     colChecker(i:number,j:number,B:Array<boolean>){
       while(i>=0){
         B[this.solution[i][j]]=true;
         i--;
       }
     }
+    //remove marked numbers that were in the collunm
     colRemover(i:number,j:number,B:Array<Boolean>){
       while(i>=0){
         B[this.solution[i][j]]=false;
         i--;
       }
     }
+    //check the row for like numbers and mark thm
     rowChecker(i:number,j:number,B:Array<boolean>){
       while(j>=0){
         B[this.solution[i][j]]=true;
         j--;
       }
     }
+    //remove marked numbers in the row
     rowRemover(i:number,j:number,B:Array<Boolean>){
       while(j>=0){
         B[this.solution[i][j]]=false;
         j--;
       }
     }
-    validate(){
-      this.solved=true
-      for(var i=0;i<this.height;i++){
-        for(var j=0;j<this.width;j++){
-          if(this.solution[i][j]!=this.squares[i][j]){
-            this.solved=false;
-            break
-          }
-        }
-      }
-      return this.solved
+    //When given 2 indeicies(row, collum), return the box number
+   BoxNumberDeterminer(i: number,j:number){
+      var boxnum;
+      if(i<3){boxnum=Math.ceil((j+1)/3)}
+      else if(i<6){boxnum=Math.ceil((j+1)/3)+3}
+      else(boxnum=Math.ceil((j+1)/3)+6)
+      return boxnum;
     }
+    //when given a boxnumber, return the indicies(row,collom), where that box starts
+    BoxIndeciesFinder(boxnum:number){
+      var indecies = new Array(2)
+      if(boxnum%3==1){
+        indecies[0]=boxnum-1
+        indecies[1]=0
+      }
+      if(boxnum%3==2){
+        indecies[0]=boxnum-2
+        indecies[1]=3
+      }
+      if(boxnum%3==0){
+        indecies[0]=boxnum-3
+        indecies[1]=6
+      }
+      return indecies
+    }
+    //make sure there are no similar values in a box
+  boxChecker(i:number,j:number,B:Array<Boolean>){
+    var boxnum=this.BoxNumberDeterminer(i,j)
+    while(i>=0&&boxnum==this.BoxNumberDeterminer(i,j)){
+      while(boxnum==this.BoxNumberDeterminer(i,j)){
+        B[this.solution[i][j]]=true
+        j--;
+      }
+      j=j+3
+      i--
+    }
+  }
+  //reset the checker for the box
+  boxRemover(i:number,j:number,B:Array<Boolean>){
+    var boxnum=this.BoxNumberDeterminer(i,j)
+    while(i>=0&&boxnum==this.BoxNumberDeterminer(i,j)){
+      while(boxnum==this.BoxNumberDeterminer(i,j)){
+        B[this.solution[i][j]]=false
+        j--;
+      }
+      j=j+3
+      i--
+    }
+  }
 
 /* generates individual rows with nums 1-9 in rand order.
 this.width = 9;

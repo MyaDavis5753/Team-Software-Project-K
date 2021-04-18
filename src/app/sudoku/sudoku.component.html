@@ -17,6 +17,7 @@
                     type="number"
                     onkeypress="if(this.value.length>=1) return false"
                     oninput="if(value>9||value<1&&value!='') alert('invalid entry')"
+                    oninput="cell=value"
                     min="1"
                     max="9" 
                     placeholder={{cell}}
