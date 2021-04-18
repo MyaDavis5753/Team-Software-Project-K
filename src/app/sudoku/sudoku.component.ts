@@ -14,6 +14,7 @@ export class SudokuComponent implements OnInit {
   squares!: number[][];
   difficulty!: number;//1==easy,2==medium;3==hard;4==expert
   solution!: number[][];
+  solved!: boolean
 
   constructor() { }
 
@@ -33,11 +34,27 @@ export class SudokuComponent implements OnInit {
       else(boxnum=Math.ceil((j+1)/3)+6)
       return boxnum;
     }
+    BoxIndeciesFinder(boxnum:number){
+      var indecies = new Array(2)
+      if(boxnum%3==1){
+        indecies[0]=boxnum-1
+        indecies[1]=0
+      }
+      if(boxnum%3==2){
+        indecies[0]=boxnum-2
+        indecies[1]=3
+      }
+      if(boxnum%3==0){
+        indecies[0]=boxnum-3
+        indecies[1]=6
+      }
+      return indecies
+    }
   boxChecker(i:number,j:number,B:Array<Boolean>){
     var boxnum=this.BoxNumberDeterminer(i,j)
     while(i>=0&&boxnum==this.BoxNumberDeterminer(i,j)){
       while(boxnum==this.BoxNumberDeterminer(i,j)){
-        B[this.squares[i][j]]=true
+        B[this.solution[i][j]]=true
         j--;
       }
       j=j+3
@@ -48,7 +65,7 @@ export class SudokuComponent implements OnInit {
     var boxnum=this.BoxNumberDeterminer(i,j)
     while(i>=0&&boxnum==this.BoxNumberDeterminer(i,j)){
       while(boxnum==this.BoxNumberDeterminer(i,j)){
-        B[this.squares[i][j]]=false
+        B[this.solution[i][j]]=false
         j--;
       }
       j=j+3
@@ -63,56 +80,91 @@ export class SudokuComponent implements OnInit {
     [],[],[],
     [],[],[],
   ]
+  this.solution=[
+    [],[],[],
+    [],[],[],
+    [],[],[],
+  ]
 
     this.width = 9;
     this.height = 9;
     for(var i=0;i<this.height;i++){
-      for(var j=0;j<this.height;j++){
-        this.squares[i][j]=0
+      for(var j=0;j<this.width;j++){
+        this.solution[i][j]=0
       }
     }
     var validEntryB = new Array(10).fill(false)
-    for (var i: number = 0; i < this.height;i++) {
-      this.squares[i] = [];
-       for (var j: number = 0;  j < this.width;) {
-         if(this.difficulty==4||this.difficulty==2.5){if(i>0){this.colChecker(i-1,j,validEntryB)}}
-         if(this.difficulty==3.5||this.difficulty==2.5){if(j>0){this.rowChecker(i,j-1,validEntryB)}}
-         if(this.difficulty==3||this.difficulty==2.5){this.boxChecker(i,j,validEntryB)}
+    for(var k=0;k<35;k=k+4){
+      this.BoxMaker(k%9+1,validEntryB)
+    }
+    for(var i=0;i<this.height;i++){
+      for(var j=0;j<this.width;j++){
+        this.squares[i][j]=this.difficulty/9>=Math.random()?this.solution[i][j]:0
+      }
+    }
+  }
+  BoxMaker(boxnum:number,validEntryB:Array<boolean>){
+    var indicies =this.BoxIndeciesFinder(boxnum)
+    var h=indicies[0]
+    var w=indicies[1]
+    for (var i: number = h; i < 3+h;i++) {
+       for (var j: number = w;  j < 3+w;) {
+         this.colChecker(8,j,validEntryB)
+         this.rowChecker(i,9,validEntryB)
+         this.boxChecker(i,j,validEntryB)
         console.log(validEntryB)
         var n=Math.floor(Math.random()*9+1)
-        if(!validEntryB[n]){
-          this.squares[i][j] = n
-          this.colRemover(i,j,validEntryB);
-          this.rowRemover(i,j,validEntryB);
-          this.boxRemover(i,j,validEntryB);
-          j++;
-        }
+        var count=0
+        while(count<=9){
+          if(!validEntryB[n]||count==9){
+            this.solution[i][j]=count==9?-1:n
+            this.colRemover(i,j,validEntryB);
+            this.rowRemover(i,j,validEntryB);
+            this.boxRemover(i,j,validEntryB);
+            j++;
+            break
+          }
+          n=n%9+1
+          count++
+        } 
       }
     }
   }  
     colChecker(i:number,j:number,B:Array<boolean>){
       while(i>=0){
-        B[this.squares[i][j]]=true;
+        B[this.solution[i][j]]=true;
         i--;
       }
     }
     colRemover(i:number,j:number,B:Array<Boolean>){
       while(i>=0){
-        B[this.squares[i][j]]=false;
+        B[this.solution[i][j]]=false;
         i--;
       }
     }
     rowChecker(i:number,j:number,B:Array<boolean>){
       while(j>=0){
-        B[this.squares[i][j]]=true;
+        B[this.solution[i][j]]=true;
         j--;
       }
     }
     rowRemover(i:number,j:number,B:Array<Boolean>){
       while(j>=0){
-        B[this.squares[i][j]]=false;
+        B[this.solution[i][j]]=false;
         j--;
       }
+    }
+    validate(){
+      this.solved=true
+      for(var i=0;i<this.height;i++){
+        for(var j=0;j<this.width;j++){
+          if(this.solution[i][j]!=this.squares[i][j]){
+            this.solved=false;
+            break
+          }
+        }
+      }
+      return this.solved
     }
 
 /* generates individual rows with nums 1-9 in rand order.

@@ -5,6 +5,9 @@
     <p class="correctSolution" *ngIf="difficulty == 3">Hard</p>
     <p class="correctSolution" *ngIf="difficulty == 2.5">Expert</p>
     <button (click)="generatePuzzle(difficulty)">Generate New Puzzle</button>
+    <button (click)="validate()">Check Puzzle</button>
+    <p class="correctSolution" *ngIf="solved==true">Correct!</p>
+      <p class="incorrectSolution" *ngIf="solved==false">There may be mistakes in the puzzle</p>
 <main>
 <table style="float: left" id='game' *ngIf="squares">
     <tbody>
