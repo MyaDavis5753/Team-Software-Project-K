@@ -27,6 +27,11 @@ export class SudokuComponent implements OnInit {
       this.difficulty=4;
     }
   }
+  update(value:number,i:number,j:number){
+    var x=String.fromCharCode(value)
+    this.squares[i][j]=parseInt(x)
+    console.log(this.squares)   
+  }
   //check to see if the puzzle is right
   validate(){
     this.solved=true
