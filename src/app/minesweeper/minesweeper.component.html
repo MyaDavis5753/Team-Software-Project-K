@@ -31,11 +31,11 @@
 	<tbody>
 		<tr *ngFor="let row of cells; let r = index">
 			<td *ngFor="let cell of row; let c = index"
-				(click)="onLClick(c,r)"
-				(contextmenu)="onRClick($event, c, r)">
-					<button class="cell hidden" *ngIf="solution[c][r] == 0">-</button>
-					<button class="cell shown" *ngIf="solution[c][r] == 1">{{cell}}</button>
-					<button class="cell flagged" *ngIf="solution[c][r] == 2 || solution[c][r] == 3">X</button>
+				(click)="onLClick(r,c)"
+				(contextmenu)="onRClick($event, r, c)">
+					<button class="cell hidden" *ngIf="solution[r][c] == 0">-</button>
+					<button class="cell shown" *ngIf="solution[r][c] == 1">{{cell}}</button>
+					<button class="cell flagged" *ngIf="solution[r][c] == 2 || solution[r][c] == 3">X</button>
 			</td>
 		</tr>
 	</tbody>
