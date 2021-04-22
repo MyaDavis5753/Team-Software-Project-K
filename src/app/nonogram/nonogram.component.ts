@@ -19,6 +19,8 @@ export class NonogramComponent implements OnInit {
   valid!: boolean[]; // array telling whether each col/row is valid, first part is cols, second part is rows
   solved!: number; // 0: no solution submitted, 1: solution incorrect, 2: solution correct
   solution!: number[][];
+  cellSizePx!: number; // size of cell in pixels
+  
 
   constructor() {
    }
