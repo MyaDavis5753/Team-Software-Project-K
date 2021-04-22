@@ -55,9 +55,6 @@ export class MinesweeperComponent implements OnInit {
         this.hasWon = false;
 
         this.firstClick = true;
-        /*for (let i = 0; i < mines; i++) {
-            this.placeMines(this.getRandomIntInclusive(0, this.width - 1), this.getRandomIntInclusive(0, this.height - 1));
-        }*/
     }
 
     //Places Mines
@@ -77,7 +74,7 @@ export class MinesweeperComponent implements OnInit {
                 this.cells[x - 1][y - 1] += 1;
             }
             if ((x < this.width - 1) && (y > 0)) {
-                console.log("X: " + x + "Y: " + y);
+                
                 this.cells[x + 1][y - 1] = this.cells[x + 1][y - 1] + 1;
             }
             if ((x < this.width - 1)) {
@@ -132,8 +129,9 @@ export class MinesweeperComponent implements OnInit {
                 this.cells[x][y] += 100;
                 this.firstClick = false;
             }
-
+            console.log(this.solution);
             this.revealCells(x, y);
+            
         }
     }
 
@@ -149,40 +147,14 @@ export class MinesweeperComponent implements OnInit {
             alert("Game over, you stepped on a mine!");
         }
         else if (this.cells[x][y] == 0) {
-            this.solution[x][y] == 1 //Revealing a cell that is not adjacent to a mine attempts to reveal all adjacent cells
+            this.solution[x][y] = 1 //Revealing a cell that is not adjacent to a mine attempts to reveal all adjacent cells
 
             this.revealLeft(x, y);
             this.revealRight(x, y);
             this.revealUp(x, y);
             this.revealDown(x, y);
 
-            this.solution[x][y] == 1;
-
-            /*if (x > 0) {
-                this.revealCells(x - 1, y);
-            }
-            if (y > 0) {
-                this.revealCells(x, y - 1);
-            }
-            if (x > 0 && y > 0) {
-                this.revealCells(x - 1, y - 1);
-            }
-            if ((x < this.width - 1) && y > 0) {
-                this.revealCells(x + 1, y - 1);
-            }
-            if ((x < this.width - 1)) {
-                this.revealCells(x + 1, y);
-            }
-            if ((x < this.width - 1) && (y < this.height - 1)) {
-                this.revealCells(x + 1, y + 1);
-            }
-            if ((y < this.height - 1)) {
-                this.revealCells(x, y + 1);
-            }
-            if (x > 0 && (y < this.height - 1)) {
-                this.revealCells(x - 1, y + 1);
-            }*/
-
+            this.solution[x][y] = 1;
 
         }
         
@@ -226,8 +198,8 @@ export class MinesweeperComponent implements OnInit {
         while (y + this.utally < this.height && this.uDone != true) {
             if ((this.cells[x][y + this.utally] > -1) && this.solution[x][y + this.utally] == 0) {
                 this.solution[x][y + this.utally] = 1;
-                this.revealLeft(x, y + this.dtally);
-                this.revealRight(x, y + this.dtally);
+                this.revealLeft(x, y + this.utally);
+                this.revealRight(x, y + this.utally);
                 this.utally++;
             }
             else {
