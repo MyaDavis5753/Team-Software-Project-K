@@ -1,7 +1,70 @@
-.title{
+.title {
     text-align: center;
-    margin-top: 70px;
+    margin-top: 50px;
+    margin-bottom: 30px;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-size: 32px;
+    
 }
+
+.col{
+    float: left;
+    width: 33.33%
+}
+.main{
+    content: "";
+    display: table;
+    clear: both;
+    width: 100%;
+}
+
+.generate {
+    display: inline-block;
+    margin: 40px;
+    margin-left: 100px;
+    width: 25%;
+}
+
+label{
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-size: 20px;
+    padding: 10px;
+}
+
+input{
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-size: 18px;
+    padding: 5px;
+    margin: 5px;
+}
+
+.input{
+    display: block;
+}
+
+.generatebutton{
+    display: block;
+    margin-top: 10px;
+    
+
+    background-color: white;
+    border-color: #b3b3ff;
+    border-radius: 0px;
+
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-size: 20px;
+    padding: 5px;
+}
+    .generatebutton:hover{
+        background-color: #b3b3ff;
+
+    }
+
+.puzzle{
+    display: inline;
+    margin: auto;
+}
+
 
 .cell {
     width: 50px;
@@ -45,3 +108,20 @@
 .undefined {
     background-color: white;
 }
+
+.checkButton{
+    display: inline-block;
+    margin-top: 10px;
+    
+
+    background-color: white;
+    border-color: #b3b3ff;
+    border-radius: 0px;
+
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-size: 20px;
+    padding: 5px;
+}
+    .checkButton:hover{
+        background-color: #b3b3ff;
+    }
