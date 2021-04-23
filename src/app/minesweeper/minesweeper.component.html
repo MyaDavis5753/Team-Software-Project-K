@@ -25,8 +25,6 @@
 			<button class="generatebutton button">Generate New Game</button>
 		</form>
 		<button class="checkButton button" (click)="validate()">Check Game</button>
-		<p class="correct" *ngIf="hasWon == true">Correct!</p>
-		<p class="incorrect" *ngIf="hasWon == false">Incorrect!</p>
 	</div>
 
 	<table style="float:left" id='game' *ngIf="cells">
@@ -35,7 +33,7 @@
 				<td *ngFor="let cell of row; let c = index"
 					(click)="onLClick(r,c)"
 					(contextmenu)="onRClick($event, r, c)">
-						<button class="cell hidden" *ngIf="solution[r][c] == 0">-</button>
+						<button class="cell hidden" *ngIf="solution[r][c] == 0"></button>
 						<button class="cell shown" *ngIf="solution[r][c] == 1">{{cell}}</button>
 						<button class="cell flagged" *ngIf="solution[r][c] == 2 || solution[r][c] == 3">X</button>
 				</td>
