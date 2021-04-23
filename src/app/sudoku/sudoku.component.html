@@ -20,7 +20,7 @@
                     min="1"
                     max="9" 
                     maxlength="1"
-                    value={{cell.value}}
+                    [value]="cell.value == 0 ? '' : cell.value"
 		    [readonly]="cell.generated"
                     onkeypress="update($event.keyCode,r,c)"
 		    oninput="if(value>9||value<1&&value!='') {
@@ -37,16 +37,3 @@
     </tbody>
 </table>
 </main>
-<!--code to make an input form for sudoku puzzles
-<mat-grid-list cols="2" rowHeight="3:1">
-<mat-grid-tile>
-<form class="example-form">
-  <mat-form-field class="example-full-width">
-    <input
-      type="number"
-      oninput="if(value>9||value<1&&value!='') alert('invalid entry')"
-      matInput
-      placeholder=""
-    />
-  </mat-form-field></form
-></mat-grid-tile-->
