@@ -1,10 +1,10 @@
 <h1 class="title">Sudoku</h1>
 	<div class="fields">
 	    <button (click)="setDifficulty()">Difficulty</button>
-	    <p class="correctSolution" *ngIf="difficulty == 4">Easy</p>
-	    <p class="correctSolution" *ngIf="difficulty == 3.5">Medium</p>
-	    <p class="correctSolution" *ngIf="difficulty == 3">Hard</p>
-	    <p class="correctSolution" *ngIf="difficulty == 2.5">Expert</p>
+	    <p class="correctSolution" *ngIf="difficulty == 4" style="color: green">Easy</p>
+	    <p class="correctSolution" *ngIf="difficulty == 3.5" style="color:blue">Medium</p>
+	    <p class="correctSolution" *ngIf="difficulty == 3" style="color:red">Hard</p>
+	    <p class="correctSolution" *ngIf="difficulty == 2.5" style="color:black">Expert</p>
 	    <button (click)="generatePuzzle(difficulty)">Generate New Puzzle</button>
 	    <button (click)="validate()">Check Puzzle</button>
 	    <p class="correctSolution" *ngIf="solved==true">Correct!</p>
