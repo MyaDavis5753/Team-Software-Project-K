@@ -15,14 +15,6 @@ export class MinesweeperComponent implements OnInit {
     hasWon!: boolean;
     correctFlags!: number; //Number of correct flags found in validation
     incorrect!: boolean; //Are any incorrect flags present
-    ltally!: number;
-    rtally!: number;
-    utally!: number;
-    dtally!: number;
-    lDone!: boolean;
-    rDone!: boolean;
-    uDone!: boolean;
-    dDone!: boolean;
     firstClick!: boolean;
 
     //Generates a random int between given min and max, including those numbers
@@ -161,65 +153,121 @@ export class MinesweeperComponent implements OnInit {
     }
 
     revealLeft(x: number, y: number) {
-        this.ltally = 1;
-        this.lDone = false;
-        while (x - this.ltally >= 0 && this.lDone != true) {
-            if (this.cells[x - this.ltally][y] > -1 && this.solution[x - this.ltally][y] == 0) {
-                this.solution[x - this.ltally][y] = 1;
-                this.revealUp(x - this.ltally, y);
-                this.revealDown(x - this.ltally, y);
-                this.ltally++;
+        var count: number;
+        var done: boolean;
+
+        count = 1;
+        done = false;
+
+        while (x - count >= 0 && done != true) {
+            if (this.cells[x - count][y] > -1 && this.solution[x - count][y] == 0) {
+
+                this.solution[x - count][y] = 1;
+
+
+                if (this.cells[x - count][y] > 0) {
+                    done = true;
+                    break;
+                }
+
+                if (done == false) {
+                    this.revealUp(x - count, y);
+                    this.revealDown(x - count, y);
+                }
+
+                count++;
             }
             else {
-                this.lDone = true;
+                done = true;
             }
         }
     }
 
     revealRight(x: number, y: number) {
-        this.rtally = 1;
-        this.rDone = false;
-        while (x + this.rtally < this.width && this.rDone != true) {
-            if (this.cells[x + this.rtally][y] > -1 && this.solution[x + this.rtally][y] == 0) {
-                this.solution[x + this.rtally][y] = 1;
-                this.revealUp(x + this.rtally, y);
-                this.revealDown(x + this.rtally, y);
-                this.rtally++;
+        var count: number;
+        var done: boolean;
+
+        count = 1;
+        done = false;
+
+        while (x + count < this.width && done != true) {
+            if (this.cells[x + count][y] > -1 && this.solution[x + count][y] == 0) {
+                this.solution[x + count][y] = 1;
+
+
+                if (this.cells[x + count][y] > 0) {
+                    done = true;
+                    break;
+                }
+
+                if (done == false) {
+                    this.revealUp(x + count, y);
+                    this.revealDown(x + count, y);
+                }
+
+                count++;
             }
             else {
-                this.rDone = true;
+                done = true;
             }
         }
     }
 
-    revealUp(x: number, y: number) {
-        this.utally = 1;
-        this.uDone = false;
-        while (y + this.utally < this.height && this.uDone != true) {
-            if ((this.cells[x][y + this.utally] > -1) && this.solution[x][y + this.utally] == 0) {
-                this.solution[x][y + this.utally] = 1;
-                this.revealLeft(x, y + this.utally);
-                this.revealRight(x, y + this.utally);
-                this.utally++;
-            }
-            else {
-                this.uDone = true;
-            }
-        }
-    }
+
 
     revealDown(x: number, y: number) {
-        this.dtally = 1;
-        this.dDone = false;
-        while (y - this.dtally >= 0 && this.dDone != true) {
-            if (this.cells[x][y - this.dtally] > -1 && this.solution[x][y - this.dtally] == 0) {
-                this.solution[x][y - this.dtally] = 1;
-                this.revealLeft(x, y - this.dtally);
-                this.revealRight(x, y - this.dtally);
-                this.dtally++;
+        var count: number;
+        var done: boolean;
+
+        count = 1;
+        done = false;
+
+        while (y + count < this.height && done != true) {
+            if ((this.cells[x][y + count] > -1) && this.solution[x][y + count] == 0) {
+                this.solution[x][y + count] = 1;
+
+                if (this.cells[x][y + count] > 0) {
+                    done = true;
+                    break;
+                }
+
+                if (done == false) {
+                    this.revealLeft(x, y + count);
+                    this.revealRight(x, y + count);
+                }
+
+                count++;
             }
             else {
-                this.dDone = true;
+                done = true;
+            }
+        }
+    }
+
+
+
+    revealUp(x: number, y: number) {
+        var count: number;
+        var done: boolean;
+
+        count = 1;
+        done = false;
+
+        while (y - count >= 0 && done != true) {
+            if (this.cells[x][y - count] >= 0 && this.solution[x][y - count] == 0) {
+                this.solution[x][y - count] = 1;
+
+                if (this.cells[x][y - count] > 0) {
+                    done = true;
+                    break;
+                }
+                this.revealLeft(x, y - count);
+                this.revealRight(x, y - count);
+
+                count++;
+            }
+            else {
+                done = true;
             }
         }
     }
