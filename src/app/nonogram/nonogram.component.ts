@@ -45,6 +45,7 @@ export class NonogramComponent implements OnInit {
         this.solution[i][j] = (Math.random() > percentFilled ? 1 : 0);
       }
     }
+    console.log(this.solution);
 
     this.generateClues();
 

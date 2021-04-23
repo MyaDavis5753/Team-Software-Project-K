@@ -18,6 +18,10 @@
     width: 100%;
 }
 
+.invisible {
+    color: white;
+}
+
 .generate {
     display: inline-block;
     margin: 40px;

@@ -23,7 +23,7 @@
                 <tbody>
                     <tr *ngFor="let row of cluesTop">
                         <td *ngFor="let clue of row; let c = index">
-                            <p class="{{valid[c] ? 'valid' : 'invalid'}} clue top" *ngIf="clue != 0">{{ clue }}</p>
+                            <p class="{{valid[c] ? 'valid' : 'invalid'}} clue top {{clue == 0 ? 'invisible' : 'visible'}}">{{ clue }}</p>
                         </td>
                     </tr>
                 </tbody>
@@ -32,7 +32,7 @@
                 <tbody>
                     <tr *ngFor="let row of cluesLeft; let r = index">
                         <td *ngFor="let clue of row">
-                            <p class="{{valid[r + width] ? 'valid' : 'invalid'}} clue left" *ngIf="clue != 0">{{ clue }}
+                            <p class="{{valid[r + width] ? 'valid' : 'invalid'}} clue left {{clue == 0 ? 'invisible' : 'visible'}}">{{ clue }}
                             </p>
                         </td>
                     </tr>
