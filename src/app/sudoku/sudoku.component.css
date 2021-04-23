@@ -1,8 +1,15 @@
 .title {
-    text-align: center;
-    margin-top: 70px;
+	text-align: center;
+	margin-top: 50px;
+	margin-bottom: 30px;
+	font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+	font-size: 32px;
+
 }
 
+.cell {
+    width: 10px;
+}
 .col {
     float: left;
     width: 33.33%
@@ -15,9 +22,8 @@
     width: 100%;
 }
 
-.generate {
-    display: inline-block;
-    margin: 40px;
+.fields {
+    margin: auto;
 }
 
 label {
@@ -30,9 +36,19 @@ label {
     display: inline-block;
 }
 
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+	  -webkit-appearance: none;
+	    margin: 0;
+    }
+
+input[type=number] {
+    -moz-appearance: textfield;
+}
+
 .generatebutton {
-    display: block;
     margin-top: 10px;
+    margin: auto;
     background-color: white;
     border-color: #b3b3ff;
     border-radius: 0px;
@@ -46,7 +62,6 @@ label {
     }
 
 .puzzle {
-    display: inline;
     margin: auto;
 }
 
@@ -58,6 +73,23 @@ label {
     margin: 0px;
 }
 
+.rowThickBorder{
+    border-top: 5px solid black;
+}
+.colThickBorder{
+    border-left: 5px solid black;
+}
+.endRow{
+    border-bottom: 5px solid black;
+}
+.endCol{
+    border-right: 5px solid black;
+}
+
+mat-grid-tile{
+        background: lightblue;
+        border: solid 2px #000;
+}
 .correctSolution {
     color: green;
 }
