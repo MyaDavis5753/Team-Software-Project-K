@@ -85,6 +85,10 @@ input{
     color: red;
 }
 
+.invalid.invisible {
+    color: white;
+}
+
 .clue {
     width: 20px;
     height: 20px;
