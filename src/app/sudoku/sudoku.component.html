@@ -19,8 +19,13 @@
                     type="number"
                     min="1"
                     max="9" 
+<<<<<<< HEAD
 		    maxlength="1"
                     [value] = "cell.value == 0 ? '' : cell.value"
+=======
+                    maxlength="1"
+                    [value]="cell.value == 0 ? '' : cell.value"
+>>>>>>> 77d3624eb2e10886a5ad48ae74a2ab292bbbc7da
 		    [readonly]="cell.generated"
 		    (keyup)="!cell.generated ? update($event.keyCode,r,c) : ''"
 	
@@ -38,4 +43,8 @@
         </tr>
     </tbody>
 </table>
+<<<<<<< HEAD
 </main>
+=======
+</main>
+>>>>>>> 77d3624eb2e10886a5ad48ae74a2ab292bbbc7da

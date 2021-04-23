@@ -38,6 +38,10 @@ input::-webkit-inner-spin-button {
 	    margin: 0;
     }
 
+input[type=number] {
+    -moz-appearance: textfield;
+}
+
 .generatebutton {
     margin-top: 10px;
     margin: auto;

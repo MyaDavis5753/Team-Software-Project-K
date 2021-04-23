@@ -51,9 +51,11 @@ export class SudokuComponent implements OnInit {
   //check to see if the puzzle is right
   validate(){
     this.solved = true
+    console.log(this.squares);
     for(var i=0;i<this.height;i++){
       for(var j=0;j<this.width;j++){
         if(this.solution[i][j] != this.squares[i][j].value){
+          console.log("S: " + this.solution[i][j] + " V: " + this.squares[i][j].value);
           this.solved = false;
           break
         }

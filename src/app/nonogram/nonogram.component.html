@@ -38,7 +38,7 @@
                     </tr>
                 </tbody>
             </table>
-            <table style="float: left" id='game' *ngIf="squares">
+            <table [style.marginLeft.px]="maxCluesInRow * 15" style="float: left; position: absolute" id='game' *ngIf="squares">
                 <tbody>
                     <tr *ngFor="let row of squares; let r = index">
                         <td *ngFor="let cell of row; let c = index" (click)="onLClick(r, c)"
