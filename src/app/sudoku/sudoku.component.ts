@@ -2,16 +2,24 @@ import { Component, OnInit } from '@angular/core';
 
 import {MatGridListModule} from '@angular/material/grid-list';
 
+
+ export interface SudokuCell {
+	value: number;
+	generated: boolean;	
+ }
+ 
 @Component({
   selector: 'app-sudoku',
   templateUrl: './sudoku.component.html',
   styleUrls: ['./sudoku.component.css', '../app.component.css']
 })
+
 export class SudokuComponent implements OnInit {
+	
 
   width!: number;
   height!: number;
-  squares!: number[][];
+  squares!: SudokuCell[][];
   difficulty!: number;//1==easy,2==medium;3==hard;4==expert
   solution!: number[][];
   solved!: boolean
@@ -19,26 +27,34 @@ export class SudokuComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
-    this.difficulty=4;
+    this.difficulty = 4;
   }
+
   setDifficulty(){
-    this.difficulty=this.difficulty-.5;
-    if(this.difficulty==2){
-      this.difficulty=4;
+    this.difficulty = this.difficulty - .5;
+    if(this.difficulty == 2){
+      this.difficulty = 4;
     }
   }
+
   update(value:number,i:number,j:number){
-    var x=String.fromCharCode(value)
-    this.squares[i][j]=parseInt(x)
+    var x = String.fromCharCode(value)
+    this.squares[i][j].value = parseInt(x)
     console.log(this.squares)   
   }
+
+  checkCell(i:number,j:number) {
+	console.log("I am checking the cell\n")
+	return this.squares[i][j].generated
+  }	  
+
   //check to see if the puzzle is right
   validate(){
-    this.solved=true
+    this.solved = true
     for(var i=0;i<this.height;i++){
       for(var j=0;j<this.width;j++){
-        if(this.solution[i][j]!=this.squares[i][j]){
-          this.solved=false;
+        if(this.solution[i][j] != this.squares[i][j].value){
+          this.solved = false;
           break
         }
       }
@@ -48,12 +64,18 @@ export class SudokuComponent implements OnInit {
   
   generatePuzzle(difficulty: number){
 //create baseline arrays for each of what we are going to use, arranged this way to note that they should have patterns of a 3x3 grid
-  this.squares=[
-    [],[],[],
-    [],[],[],
-    [],[],[],
+  this.squares = [
+    [{value: 0, generated: false},{value: 0, generated: false},{value: 0, generated: false},{value: 0, generated: false},{value: 0, generated: false},{value: 0, generated: false},{value: 0, generated: false},{value: 0, generated: false},{value: 0, generated: false}],
+    [{value: 0, generated: false},{value: 0, generated: false},{value: 0, generated: false},{value: 0, generated: false},{value: 0, generated: false},{value: 0, generated: false},{value: 0, generated: false},{value: 0, generated: false},{value: 0, generated: false}],
+    [{value: 0, generated: false},{value: 0, generated: false},{value: 0, generated: false},{value: 0, generated: false},{value: 0, generated: false},{value: 0, generated: false},{value: 0, generated: false},{value: 0, generated: false},{value: 0, generated: false}],
+    [{value: 0, generated: false},{value: 0, generated: false},{value: 0, generated: false},{value: 0, generated: false},{value: 0, generated: false},{value: 0, generated: false},{value: 0, generated: false},{value: 0, generated: false},{value: 0, generated: false}],
+    [{value: 0, generated: false},{value: 0, generated: false},{value: 0, generated: false},{value: 0, generated: false},{value: 0, generated: false},{value: 0, generated: false},{value: 0, generated: false},{value: 0, generated: false},{value: 0, generated: false}],
+    [{value: 0, generated: false},{value: 0, generated: false},{value: 0, generated: false},{value: 0, generated: false},{value: 0, generated: false},{value: 0, generated: false},{value: 0, generated: false},{value: 0, generated: false},{value: 0, generated: false}],
+    [{value: 0, generated: false},{value: 0, generated: false},{value: 0, generated: false},{value: 0, generated: false},{value: 0, generated: false},{value: 0, generated: false},{value: 0, generated: false},{value: 0, generated: false},{value: 0, generated: false}],
+    [{value: 0, generated: false},{value: 0, generated: false},{value: 0, generated: false},{value: 0, generated: false},{value: 0, generated: false},{value: 0, generated: false},{value: 0, generated: false},{value: 0, generated: false},{value: 0, generated: false}],
+    [{value: 0, generated: false},{value: 0, generated: false},{value: 0, generated: false},{value: 0, generated: false},{value: 0, generated: false},{value: 0, generated: false},{value: 0, generated: false},{value: 0, generated: false},{value: 0, generated: false}],
   ]
-  this.solution=[
+  this.solution = [
     [],[],[],
     [],[],[],
     [],[],[],
@@ -62,9 +84,9 @@ export class SudokuComponent implements OnInit {
   //get some inital parameters set.  
     this.width = 9;
     this.height = 9;
-    for(var i=0;i<this.height;i++){
-      for(var j=0;j<this.width;j++){
-        this.solution[i][j]=0
+    for(var i = 0; i < this.height; i++){
+      for(var j = 0; j < this.width; j++){
+        this.solution[i][j] = 0
       }
     }
     var validEntryB = new Array(10).fill(false)
@@ -93,9 +115,13 @@ export class SudokuComponent implements OnInit {
       }
       for(var j=0;j<this.width;j++){
         //fill the puzzle with the numbers from our row, ensuring that no number ends up in the same collumn
-        this.solution[i][j]=rows[(j+i*3+count)%9]        
+        this.solution[i][j] = rows[(j+i*3+count) % 9]        
         //what we show, based of difficulty
-        this.squares[i][j]=this.difficulty/9>Math.random()?this.solution[i][j]:null
+	let chance = this.difficulty / 9 > Math.random()	
+	if(chance) {
+		this.squares[i][j].value = this.solution[i][j]
+		this.squares[i][j].generated = true
+	}
       }
     }
     //loged for testing purposes

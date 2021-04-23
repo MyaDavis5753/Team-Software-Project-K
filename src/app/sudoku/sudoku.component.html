@@ -1,15 +1,17 @@
 <h1 class="title">Sudoku</h1>
-    <button (click)="setDifficulty()">Difficulty</button>
-    <p class="correctSolution" *ngIf="difficulty == 4">Easy</p>
-    <p class="correctSolution" *ngIf="difficulty == 3.5">Medium</p>
-    <p class="correctSolution" *ngIf="difficulty == 3">Hard</p>
-    <p class="correctSolution" *ngIf="difficulty == 2.5">Expert</p>
-    <button (click)="generatePuzzle(difficulty)">Generate New Puzzle</button>
-    <button (click)="validate()">Check Puzzle</button>
-    <p class="correctSolution" *ngIf="solved==true">Correct!</p>
-      <p class="incorrectSolution" *ngIf="solved==false">There may be mistakes in the puzzle</p>
+	<div class="fields">
+	    <button (click)="setDifficulty()">Difficulty</button>
+	    <p class="correctSolution" *ngIf="difficulty == 4">Easy</p>
+	    <p class="correctSolution" *ngIf="difficulty == 3.5">Medium</p>
+	    <p class="correctSolution" *ngIf="difficulty == 3">Hard</p>
+	    <p class="correctSolution" *ngIf="difficulty == 2.5">Expert</p>
+	    <button (click)="generatePuzzle(difficulty)">Generate New Puzzle</button>
+	    <button (click)="validate()">Check Puzzle</button>
+	    <p class="correctSolution" *ngIf="solved==true">Correct!</p>
+	      <p class="incorrectSolution" *ngIf="solved==false">There may be mistakes in the puzzle</p>
+      	</div>
 <main>
-<table style="float: left" id='game' *ngIf="squares">
+<table class="puzzle" *ngIf="squares">
     <tbody>
         <tr *ngFor="let row of squares; let r = index">
             <td *ngFor="let cell of row; let c = index" class="{{r % 3 == 0 ? 'rowThickBorder' : ''}} {{c%3==0?'colThickBorder':''}} {{r%8 ==0&&r!=0?'endRow':''}} {{c%8==0&&c!=0?'endCol':''}}">
@@ -18,9 +20,14 @@
                     min="1"
                     max="9" 
                     maxlength="1"
-                    (keypress)="update($event.keyCode,r,c)"
-                    oninput="if(value>9||value<1&&value!='') alert('invalid entry')"
-                    value={{cell}}
+                    value={{cell.value}}
+		    [readonly]="cell.generated"
+                    onkeypress="update($event.keyCode,r,c)"
+		    oninput="if(value>9||value<1&&value!='') {
+					alert('invalid entry') 
+		    			value = ''
+		    		}"
+		    [style] = "cell.generated ? 'font-weight:bold' : ''"
                 />
                 <!--
                     How to get rid of e input?

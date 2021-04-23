@@ -18,9 +18,8 @@
     width: 100%;
 }
 
-.generate {
-    display: inline-block;
-    margin: 40px;
+.fields {
+    margin: auto;
 }
 
 label {
@@ -33,9 +32,15 @@ label {
     display: inline-block;
 }
 
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+	  -webkit-appearance: none;
+	    margin: 0;
+    }
+
 .generatebutton {
-    display: block;
     margin-top: 10px;
+    margin: auto;
     background-color: white;
     border-color: #b3b3ff;
     border-radius: 0px;
@@ -49,7 +54,6 @@ label {
     }
 
 .puzzle {
-    display: inline;
     margin: auto;
 }
 
