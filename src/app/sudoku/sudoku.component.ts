@@ -37,14 +37,14 @@ export class SudokuComponent implements OnInit {
     }
   }
 
-  update(value:number,i:number,j:number){
-    var x = String.fromCharCode(value)
-    this.squares[i][j].value = parseInt(x)
-    console.log(this.squares)   
+  update(value:number,i:number,j:number) {
+    if(value >= 49 && value <= 57) {
+	    var x = String.fromCharCode(value)
+	    this.squares[i][j].value = parseInt(x)
+    }
   }
 
   checkCell(i:number,j:number) {
-	console.log("I am checking the cell\n")
 	return this.squares[i][j].generated
   }	  
 
@@ -124,9 +124,6 @@ export class SudokuComponent implements OnInit {
 	}
       }
     }
-    //loged for testing purposes
-    console.log(this.solution)
-    console.log(this.squares)
   }
 
   /*Welcome to the graveyard of failed ideas.
